@@ -4,7 +4,7 @@ HID++ 2.0 is a self descriptive protocol built on top of the USB HID specificati
 The goal is to be able to interact with the device without having any knowledge about
 it beforehand.
 
-To start have a look a the [`IRoot`](features/0x000-IRoot.md) feature.
+To start have a look a the [`IRoot`](features/0x0000-IRoot.md) feature.
 
 ### Feature List
 
