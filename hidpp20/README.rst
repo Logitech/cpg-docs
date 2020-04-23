@@ -5,7 +5,94 @@ HID++ 2.0 is a self descriptive protocol built on top of the USB HID
 specification. The goal is to be able to interact with the device
 without having any knowledge about it beforehand.
 
-To start have a look a the |IRoot|_ feature.
+Packet Structure
+~~~~~~~~~~~~~~~~
+
+
+.. table:: Table 1 - Packet structure
+
+    +-------------+-----------+--------------+---------------+------------------------+------------+
+    |     byte    |     0     |       1      |       2       |            3           |  4 .. End  |
+    +-------------+-----------+--------------+---------------+----------+-------------+------------+
+    |     bit     |                                          |  15 .. 8 |    7 .. 0   |            |
+    +=============+===========+==============+===============+==========+=============+============+
+    | description | Report ID | Device Index | Feature Index | Function | Software ID | Parameters |
+    +-------------+-----------+--------------+---------------+----------+-------------+------------+
+
+
+Report ID
+    The first byte of the report as defined in the HID specification. Supported
+    report types by the device can be found in the HID report descriptor.
+
+    There following report types are supported:
+
+    .. table:: Table 2 - Supported report types
+
+        =========== ======== ========
+        Report Type   Value   Lenght
+        =========== ======== ========
+           Short    ``0x10``  7 bytes
+           Long     ``0x11`` 20 bytes
+        =========== ======== ========
+
+Device Index
+    Target device index. ``0xff`` is reserved for corded devices and receivers.
+
+Feature Index
+    Each device has a feature table. It resolves the feature ID (see below) to
+    the internal feature index. The IRoot feature is **required** to be present
+    and have the index **0**.
+
+    To read the feature table, you can use the ``GetFeature`` function from the
+    |IRoot|_ feature.
+
+    .. table:: Table 3 - Example device feature table
+
+        =============================== =====
+                   Feature ID           Index
+        =============================== =====
+        ``0x0000`` **(IRoot)**          **0**
+        ``0x0002`` (IFeatureInfo)         1
+        ``0x0003`` (Device Information)   2
+        ``0x40a0`` (Fn Inversion)         3
+        =============================== =====
+
+Function
+    Each HID++ feature can define a list of functions. To access a function you
+    send a request with the desired feature index and the function ID.
+
+Software ID
+    This ID is used in case multiple applications want to interact with the
+    device. When you send a request with a software ID, the reponse's software
+    ID will have the same value. You can use it to make sure a reply is meant
+    for you.
+
+Parameters
+    The parameters hold arbitrary data to interact with the functions. For
+    requests they hold function arguments, and for responses, they hold return
+    values.
+
+
+.. table:: Table 4 - Short packet structure
+
+    +-------------+------+--------------+---------------+------------------------+----+---+---+
+    |     byte    |   0  |       1      |       2       |            3           |  4 | 5 | 6 |
+    +-------------+------+--------------+---------------+----------+-------------+----+---+---+
+    |     bit     |                                     |  15 .. 8 |    7 .. 0   |            |
+    +=============+======+==============+===============+==========+=============+============+
+    | description | 0x10 | Device Index | Feature Index | Function | Software ID | Parameters |
+    +-------------+------+--------------+---------------+----------+-------------+------------+
+
+
+.. table:: Table 5 - Long packet structure
+
+    +-------------+------+--------------+---------------+------------------------+---+---+---+---+---+---+----+----+----+----+----+----+----+----+----+----+
+    |     byte    |   0  |       1      |       2       |            3           | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+    +-------------+------+--------------+---------------+----------+-------------+---+---+---+---+---+---+----+----+----+----+----+----+----+----+----+----+
+    |     bit     |                                     |  15 .. 8 |    7 .. 0   |                                                                         |
+    +=============+======+==============+===============+==========+=============+=========================================================================+
+    | description | 0x11 | Device Index | Feature Index | Function | Software ID |                                Parameters                               |
+    +-------------+------+--------------+---------------+----------+-------------+-------------------------------------------------------------------------+
 
 
 Feature List
