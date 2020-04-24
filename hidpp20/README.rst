@@ -99,7 +99,7 @@ Feature List
 ~~~~~~~~~~~~
 
 00 - Important
-    - ``0x0000`` IRoot
+    - ``0x0000`` `IRoot <features/0x0000-IRoot.md>`_
     - ``0x0001`` IFeatureSet
     - ``0x0002`` IFeatureInfo
 
