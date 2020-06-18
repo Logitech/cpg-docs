@@ -1,18 +1,19 @@
 *********************
-0x4521 - Disable Keys
+Disable Keys (``0x4521``)
 *********************
 
-Interface
+.. table:: Table 1 - Functions
 
-[0x4521] DisableKeys
-====================
+    == ====================== =======================================================
+    ID          Name                               Arguments
+    == ====================== =======================================================
+     0 GetCapabilities        None
+     1 GetDisabledKeys        None
+     2 SetDisabledKeys        keysToDisable
+    == ====================== =======================================================
 
-    disableableKeys = [0]GetCapabilities()
-
-    disabledKeys = [1]GetDisabledKeys()
-
-    disabledKeys = [2]SetDisabledKeys(keysToDisable)
-
+Functions
+=========
 
 DisableKeys
 ~~~~~~~~~~~
